@@ -2,15 +2,14 @@ module Window (window, draw, input, update) where
 
 import World
 import Graphics.Gloss.Interface.IO.Game
-import Diagrams (Diagram)
-import Diagrams.Backend.Cairo (B)
 import Graphics.Gloss
 import Diagrams.Backend.Cairo.Ptr (renderForeignPtr)
 import System.Exit (exitSuccess)
+import ToDiagram
 
-toRGBA :: Int -> Int -> Diagram B -> IO Picture
+toRGBA :: (ToDiagram d) => Int -> Int -> d -> IO Picture
 toRGBA sx sy d = do
-    ptr <- renderForeignPtr sx sy d
+    ptr <- renderForeignPtr sx sy (toDiagram d)
     return $ bitmapOfForeignPtr sx sy (BitmapFormat TopToBottom PxRGBA) ptr False
 
 windowSize :: (Int, Int)
